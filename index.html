@@ -6,12 +6,14 @@
     <title>Omniamarket - Il tuo emporio digitale di fiducia</title>
     <style>
         :root {
-            --amazon-dark: #131921;
-            --amazon-light: #232f3e;
-            --amazon-yellow: #febd69;
-            --amazon-orange: #f3a847;
-            --bg-color: #eaeded;
+            --primary-dark: #131921;
+            --primary-light: #232f3e;
+            --accent-orange: #ff9900;
+            --accent-yellow: #febd69;
+            --bg-body: #eaeded;
             --text-main: #0f1111;
+            --text-muted: #565959;
+            --price-red: #B12704;
             --white: #ffffff;
         }
         * {
@@ -21,17 +23,20 @@
             font-family: Arial, sans-serif;
         }
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-body);
             color: var(--text-main);
         }
-        /* Header stile Amazon */
+        /* Header Principale */
         header {
-            background-color: var(--amazon-dark);
+            background-color: var(--primary-dark);
             color: var(--white);
-            padding: 10px 20px;
+            padding: 12px 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         .header-top {
             display: flex;
@@ -39,150 +44,197 @@
             align-items: center;
         }
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: bold;
             color: var(--white);
             text-decoration: none;
+            letter-spacing: -0.5px;
         }
         .logo span {
-            color: var(--amazon-yellow);
+            color: var(--accent-orange);
         }
-        .search-bar {
+        .search-container {
             display: flex;
             flex: 1;
-            max-width: 600px;
-            margin: 0 15px;
+            max-width: 650px;
+            margin: 0 20px;
         }
-        .search-bar input {
+        .search-container input {
             width: 100%;
-            padding: 10px;
+            padding: 10px 15px;
             border: none;
             border-radius: 4px 0 0 4px;
             font-size: 1rem;
             outline: none;
         }
-        .search-bar button {
-            background-color: var(--amazon-yellow);
+        .search-container button {
+            background-color: var(--accent-yellow);
             border: none;
-            padding: 0 15px;
+            padding: 0 20px;
             border-radius: 0 4px 4px 0;
             cursor: pointer;
+            font-size: 1.1rem;
             font-weight: bold;
+            transition: background 0.2s;
         }
-        .cart-info {
-            font-size: 0.9rem;
-            cursor: pointer;
-            background: var(--amazon-light);
-            padding: 8px 12px;
+        .search-container button:hover {
+            background-color: var(--accent-orange);
+        }
+        .cart-badge {
+            background: var(--primary-light);
+            padding: 8px 14px;
             border-radius: 4px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: border 0.2s;
         }
-        /* Barra di navigazione categorie */
+        .cart-badge:hover {
+            border-color: var(--white);
+        }
+
+        /* Barra di Navigazione Categorie */
         nav {
-            background-color: var(--amazon-light);
-            padding: 8px 20px;
+            background-color: var(--primary-light);
+            padding: 10px 20px;
             display: flex;
-            gap: 20px;
+            gap: 25px;
             overflow-x: auto;
             white-space: nowrap;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+        }
+        nav::-webkit-scrollbar {
+            height: 4px;
+        }
+        nav::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
         }
         nav a {
             color: var(--white);
             text-decoration: none;
             cursor: pointer;
+            transition: color 0.2s;
         }
         nav a:hover {
-            color: var(--amazon-yellow);
+            color: var(--accent-yellow);
         }
-        /* Banner principale */
-        .hero {
-            background: linear-gradient(to bottom, #232f3e, #eaeded);
-            padding: 20px;
+
+        /* Banner Promozionale */
+        .hero-banner {
+            background: linear-gradient(to bottom, var(--primary-light), var(--bg-body));
+            padding: 30px 20px;
             text-align: center;
         }
-        .hero h1 {
-            font-size: 1.8rem;
-            color: #0f1111;
-            margin-bottom: 5px;
+        .hero-banner h1 {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
         }
-        .hero p {
-            color: #565959;
-            font-size: 1rem;
+        .hero-banner p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
         }
-        /* Griglia Prodotti */
-        .container {
-            max-width: 1300px;
-            margin: -40px auto 20px auto;
-            padding: 0 15px;
+
+        /* Griglia dei Prodotti */
+        .main-container {
+            max-width: 1400px;
+            margin: -30px auto 40px auto;
+            padding: 0 20px;
             position: relative;
             z-index: 10;
         }
-        .grid {
+        .category-section {
+            margin-bottom: 40px;
+        }
+        .section-header {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+            border-left: 4px solid var(--accent-orange);
+            padding-left: 10px;
+        }
+        .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
         }
         .product-card {
             background: var(--white);
             border-radius: 8px;
             padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .product-image {
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        .product-img-box {
             width: 100%;
             height: 180px;
-            background-color: #f1f1f1;
-            border-radius: 4px;
+            background-color: #f7f7f7;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #888;
+            color: var(--text-muted);
             font-size: 0.9rem;
+            font-weight: 500;
             margin-bottom: 12px;
+            border: 1px solid #eee;
+        }
+        .product-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: bold;
+            margin-bottom: 4px;
         }
         .product-title {
             font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 8px;
             color: var(--text-main);
-        }
-        .product-category {
-            font-size: 0.75rem;
-            color: #565959;
-            text-transform: uppercase;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            line-height: 1.4;
         }
         .product-price {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: bold;
-            color: #B12704;
+            color: var(--price-red);
             margin-bottom: 12px;
         }
-        .buy-btn {
+        .btn-buy {
             background-color: #ffd814;
             border: 1px solid #fcd200;
             border-radius: 20px;
-            padding: 8px;
+            padding: 9px;
             width: 100%;
             cursor: pointer;
-            font-weight: 500;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-weight: 600;
+            font-size: 0.95rem;
             transition: background 0.2s;
         }
-        .buy-btn:hover {
+        .btn-buy:hover {
             background-color: #f7ca00;
         }
+
         /* Footer */
         footer {
-            background-color: var(--amazon-light);
+            background-color: var(--primary-light);
             color: var(--white);
             text-align: center;
-            padding: 20px;
-            margin-top: 40px;
-            font-size: 0.85rem;
+            padding: 30px 20px;
+            margin-top: 50px;
+            font-size: 0.9rem;
+        }
+        footer p {
+            opacity: 0.8;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -192,93 +244,199 @@
     <header>
         <div class="header-top">
             <a href="#" class="logo">Omnia<span>market</span></a>
-            <div class="search-bar">
-                <input type="text" placeholder="Cerca tra migliaia di prodotti su Omniamarket...">
-                <button>🔍</button>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Cerca tra cucina, casa, gadget, gaming e molto altro...">
+                <button onclick="searchProduct()">🔍</button>
             </div>
-            <div class="cart-info">🛒 Carrello (0)</div>
+            <div class="cart-badge" id="cartCount">🛒 Carrello (0)</div>
         </div>
     </header>
 
-    <!-- Menu Categorie -->
+    <!-- Navigazione Categorie -->
     <nav>
-        <a>Tutte le categorie</a>
-        <a>Gadget Tech</a>
-        <a>Casa & Pulizia</a>
-        <a>Cucina & Accessori</a>
-        <a>Gaming</a>
-        <a>Cura Personale</a>
-        <a>Offerte del Giorno</a>
+        <a href="#cucina">Cucina & Accessori</a>
+        <a href="#casa">Casa & Pulizia</a>
+        <a href="#gadget">Gadget Tech</a>
+        <a href="#gaming">Gaming & Svago</a>
+        <a href="#novita">Novità e Altro</a>
     </nav>
 
-    <!-- Sottotitolo -->
-    <div class="hero">
+    <!-- Banner -->
+    <div class="hero-banner">
         <h1>Il tuo emporio digitale di fiducia</h1>
-        <p>Gadget, tecnologia, articoli per la casa e novità selezionate per te.</p>
+        <p>Le migliori selezioni quotidiane per semplificare e migliorare ogni tuo spazio.</p>
     </div>
 
-    <!-- Catalogo Prodotti -->
-    <div class="container">
-        <div class="grid">
-            
-            <!-- Prodotto 1 -->
-            <div class="product-card">
-                <div>
-                    <div class="product-category">Gadget Tech</div>
-                    <div class="product-image">Foto Prodotto</div>
-                    <div class="product-title">Auricolari Wireless Smart Pro</div>
+    <!-- Contenuto Principale con Categorie -->
+    <div class="main-container">
+
+        <!-- Sezione Cucina -->
+        <div id="cucina" class="category-section">
+            <div class="section-header">Cucina & Accessori</div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div>
+                        <div class="product-tag">Cucina</div>
+                        <div class="product-img-box">Immagine Prodotto</div>
+                        <div class="product-title">Mini Friggitrice ad Aria Compatta 2L</div>
+                    </div>
+                    <div>
+                        <div class="product-price">€ 59,99</div>
+                        <button class="btn-buy" onclick="addToCart('Mini Friggitrice ad Aria')">Aggiungi al carrello</button>
+                    </div>
                 </div>
-                <div>
-                    <div class="product-price">€ 29,99</div>
-                    <button class="buy-btn" onclick="alert('Prodotto aggiunto al carrello!')">Aggiungi al carrello</button>
+                <div class="product-card">
+                    <div>
+                        <div class="product-tag">Cucina</div>
+                        <div class="product-img-box">Immagine Prodotto</div>
+                        <div class="product-title">Set Organizer e Contenitori Ermetici (10 pz)</div>
+                    </div>
+                    <div>
+                        <div class="product-price">€ 24,99</div>
+                        <button class="btn-buy" onclick="addToCart('Set Contenitori Ermetici')">Aggiungi al carrello</button>
+                    </div>
                 </div>
             </div>
-
-            <!-- Prodotto 2 -->
-            <div class="product-card">
-                <div>
-                    <div class="product-category">Cucina & Accessori</div>
-                    <div class="product-image">Foto Prodotto</div>
-                    <div class="product-title">Mini Friggitrice ad Aria Compatta</div>
-                </div>
-                <div>
-                    <div class="product-price">€ 59,99</div>
-                    <button class="buy-btn" onclick="alert('Prodotto aggiunto al carrello!')">Aggiungi al carrello</button>
-                </div>
-            </div>
-
-            <!-- Prodotto 3 -->
-            <div class="product-card">
-                <div>
-                    <div class="product-category">Casa & Pulizia</div>
-                    <div class="product-image">Foto Prodotto</div>
-                    <div class="product-title">Set Organizer Casa 5 in 1</div>
-                </div>
-                <div>
-                    <div class="product-price">€ 19,99</div>
-                    <button class="buy-btn" onclick="alert('Prodotto aggiunto al carrello!')">Aggiungi al carrello</button>
-                </div>
-            </div>
-
-            <!-- Prodotto 4 -->
-            <div class="product-card">
-                <div>
-                    <div class="product-category">Gaming</div>
-                    <div class="product-image">Foto Prodotto</div>
-                    <div class="product-title">Controller Wireless RGB Pro</div>
-                </div>
-                <div>
-                    <div class="product-price">€ 39,99</div>
-                    <button class="buy-btn" onclick="alert('Prodotto aggiunto al carrello!')">Aggiungi al carrello</button>
-                </div>
-            </div>
-
         </div>
+
+        <!-- Sezione Casa -->
+        <div id="casa" class="category-section">
+            <div class="section-header">Casa & Pulizia</div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div>
+                        <div class="product-tag">Casa</div>
+                        <div class="product-img-box">Immagine Prodotto</div>
+                        <div class="product-title">Mocio Rotante Multifunzione con Secchio</div>
+                    </div>
+                    <div>
+                        <div class="product-price">€ 29,99</div>
+                        <button class="btn-buy" onclick="addToCart('Mocio Rotante Multifunzione')">Aggiungi al carrello</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div>
+                        <div class="product-tag">Casa</div>
+                        <div class="product-img-box">Immagine Prodotto</div>
+                        <div class="product-title">Lampada LED Solare da Esterno con Sensore</div>
+                    </div>
+                    <div>
+                        <div class="product-price">€ 18,50</div>
+                        <button class="btn-buy" onclick="addToCart('Lampada LED Solare')">Aggiungi al carrello</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione Gadget Tech -->
+        <div id="gadget" class="category-section">
+            <div class="section-header">Gadget Tecnologici</div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div>
+                        <div class="product-tag">Tech</div>
+                        <div class="product-img-box">Immagine Prodotto</div>
+                        <div class="product-title">Auricolari Wireless Bluetooth Smart Pro</div>
+                    </div>
+                    <div>
+                        <div class="product-price">€ 27,99</div>
+                        <button class="btn-buy" onclick="addToCart('Auricolari Wireless Smart Pro')">Aggiungi al carrello</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div>
+                        <div class="product-tag">Tech</div>
+                        <div class="product-img-box">Immagine Prodotto</div>
+                        <div class="product-title">Caricatore USB-C Multiplo a 5 Porte Rapido</div>
+                    </div>
+                    <div>
+                        <div class="product-price">€ 22,00</div>
+                        <button class="btn-buy" onclick="addToCart('Caricatore USB-C Multiplo')">Aggiungi al carrello</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione Gaming -->
+        <div id="gaming" class="category-section">
+            <div class="section-header">Gaming & Svago</div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div>
+                        <div class="product-tag">Gaming</div>
+                        <div class="product-img-box">Immagine Prodotto</div>
+                        <div class="product-title">Controller Wireless Ergonomico RGB Pro</div>
+                    </div>
+                    <div>
+                        <div class="product-price">€ 39,99</div>
+                        <button class="btn-buy" onclick="addToCart('Controller Wireless RGB')">Aggiungi al carrello</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div>
+                        <div class="product-tag">Gaming</div>
+                        <div class="product-img-box">Immagine Prodotto</div>
+                        <div class="product-title">Tappetino Mouse XXL Gaming Retroilluminato</div>
+                    </div>
+                    <div>
+                        <div class="product-price">€ 16,99</div>
+                        <button class="btn-buy" onclick="addToCart('Tappetino Mouse XXL')">Aggiungi al carrello</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione Novità e Altro -->
+        <div id="novita" class="category-section">
+            <div class="section-header">Novità & Altro Ancora</div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div>
+                        <div class="product-tag">Novità</div>
+                        <div class="product-img-box">Immagine Prodotto</div>
+                        <div class="product-title">Spazzola Elettrica 5 in 1 per Capelli e Styling</div>
+                    </div>
+                    <div>
+                        <div class="product-price">€ 34,50</div>
+                        <button class="btn-buy" onclick="addToCart('Spazzola Elettrica 5 in 1')">Aggiungi al carrello</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div>
+                        <div class="product-tag">Extra</div>
+                        <div class="product-img-box">Immagine Prodotto</div>
+                        <div class="product-title">Zaino antifurto impermeabile con porta USB</div>
+                    </div>
+                    <div>
+                        <div class="product-price">€ 31,99</div>
+                        <button class="btn-buy" onclick="addToCart('Zaino antifurto impermeabile')">Aggiungi al carrello</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2026 Omniamarket - Il tuo emporio digitale di fiducia. Tutti i diritti riservati.</p>
+        <strong>Omniamarket</strong>
+        <p>&copy; 2026 - Il tuo emporio digitale di fiducia. Tutti i diritti riservati.</p>
     </footer>
 
+    <!-- Script interattivo per il carrello -->
+    <script>
+        let cartCount = 0;
+        function addToCart(productName) {
+            cartCount++;
+            document.getElementById('cartCount').innerText = `🛒 Carrello (${cartCount})`;
+            alert(`"${productName}" è stato aggiunto al carrello!`);
+        }
+        function searchProduct() {
+            const query = document.getElementById('searchInput').value;
+            if(query.trim() !== "") {
+                alert(`Hai cercato: "${query}". Funzione di ricerca rapida attiva!`);
+            }
+        }
+    </script>
 </body>
 </html>
